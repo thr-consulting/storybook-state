@@ -1,6 +1,6 @@
 {
   "name": "@thx/storybook-state",
-  "version": "1.5.0-thx.2",
+  "version": "1.5.0-thx.3",
   "description": "Manage component state in storybook stories.",
   "main": "dist/index.js",
   "typings": "index.d.ts",
@@ -33,7 +33,7 @@
   "peerDependencies": {
     "@storybook/addons": "^4.0.0-alpha.9",
     "prop-types": "^15.5.0",
-    "react": "^15.5.0 || ^16.0.0"
+    "react": "^16.0.0"
   },
   "dependencies": {
     "react-json-view": "^1.13.3"
@@ -50,7 +50,8 @@
     "enzyme": "^3.2.0",
     "enzyme-adapter-react-15": "^1.0.5",
     "jest": "^21.2.1",
-    "react-dom": "^15.6.0",
-    "react-test-renderer": "^15.6.2"
+    "react": "^16.4.1",
+    "react-dom": "^16.4.1",
+    "react-test-renderer": "^16.4.1"
   }
 }

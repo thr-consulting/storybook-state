@@ -1,6 +1,6 @@
 import React from 'react';
 import T from 'prop-types';
-import addons from '@storybook/addons';
+import addons, {makeDecorator} from '@storybook/addons';
 
 export class Store {
   constructor(initialState) {
@@ -42,66 +42,56 @@ export class Store {
 }
 
 export class StoryState extends React.Component {
-  static propTypes = {
-    channel: T.object.isRequired,
-    store: T.object.isRequired,
-    storyFn: T.func.isRequired,
-    context: T.object,
-  };
+	static propTypes = {
+		channel: T.object.isRequired,
+		parameters: T.object.isRequired,
+		story: T.func.isRequired,
+		context: T.object,
+	};
 
-  state = {
-    storyState: this.props.store.state,
-  };
+	componentDidMount() {
+		const {parameters: {store}, channel} = this.props;
 
-  componentDidMount() {
-    const { store, channel } = this.props;
+		store.subscribe(this.handleStateChange);
+		channel.on('dump247/state/reset', this.handleResetEvent);
+		channel.emit('dump247/state/change', {state: store.state});
+	}
 
-    store.subscribe(this.handleStateChange);
-    channel.on('dump247/state/reset', this.handleResetEvent);
-    channel.emit('dump247/state/change', { state: store.state });
-  }
+	componentWillUnmount() {
+		const {parameters: {store}, channel} = this.props;
 
-  componentWillUnmount() {
-    const { store, channel } = this.props;
+		store.unsubscribe(this.handleStateChange);
+		channel.removeListener('dump247/state/reset', this.handleResetEvent);
+		channel.emit('dump247/state/change', {state: null});
+	}
 
-    store.unsubscribe(this.handleStateChange);
-    channel.removeListener('dump247/state/reset', this.handleResetEvent);
-    channel.emit('dump247/state/change', { state: null });
-  }
+	handleResetEvent = () => {
+		const {parameters: {store}} = this.props;
 
-  handleResetEvent = () => {
-    const { store } = this.props;
+		store.reset();
+	};
 
-    store.reset();
-  };
+	handleStateChange = storyState => {
+		const {channel} = this.props;
 
-  handleStateChange = (storyState) => {
-    const { channel } = this.props;
+		this.forceUpdate();
+		channel.emit('dump247/state/change', {state: storyState});
+	};
 
-    this.setState({ storyState });
-    channel.emit('dump247/state/change', { state: storyState });
-  };
+	render() {
+		const {story, context} = this.props;
 
-  render() {
-    const { store, storyFn, context } = this.props;
-
-    const child = context ? storyFn(context) : storyFn(store);
-    return React.isValidElement(child) ? child : child();
-  }
+		const child = story(context);
+		return React.isValidElement(child) ? child : child();
+	}
 }
 
-export function withState(initialState, storyFn=null) {
-  const store = new Store(initialState || {});
-  const channel = addons.getChannel();
-
-  if (storyFn) {
-    // Support legacy withState signature
-    return () => (
-      <StoryState store={store} storyFn={storyFn} channel={channel}/>
-    );
-  } else {
-    return (storyFn) => (context) => (
-      <StoryState store={store} storyFn={storyFn} channel={channel} context={{...context, store}}/>
-    );
-  }
-}
+export const withState = makeDecorator({
+	name: 'withState',
+	parameterName: 'state',
+	skipIfNoParametersOrOptions: true,
+	wrapper: (getStory, context, {parameters}) => {
+		const channel = addons.getChannel();
+		return <StoryState story={getStory} channel={channel} context={context} parameters={parameters}/>;
+	},
+});

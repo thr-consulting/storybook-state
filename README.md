@@ -3,6 +3,8 @@
 An extension for [Storybook](https://storybook.js.org/) that manages the state of a stateless
 component. This makes it easier to write stories for stateless components.
 
+**For changes, see CHANGELOG.md.**
+
 ## Getting Started
 
 ### Add @dump247/storybook

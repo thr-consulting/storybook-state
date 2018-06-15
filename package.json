@@ -1,6 +1,6 @@
 {
-  "name": "@dump247/storybook-state",
-  "version": "1.5.0",
+  "name": "@thx/storybook-state",
+  "version": "1.5.0-thx.2",
   "description": "Manage component state in storybook stories.",
   "main": "dist/index.js",
   "typings": "index.d.ts",
@@ -12,23 +12,26 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/dump247/storybook-state.git"
+    "url": "git+ssh://git@github.com/thr-consulting/storybook-state.git"
   },
   "keywords": [
     "react",
     "storybook"
   ],
   "author": "Cory Thomas <cthomas7577@gmail.com>",
+  "contributors": [
+    "Mike Kornelson <darkadept@durbn.net>"
+  ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/dump247/storybook-state/issues"
+    "url": "https://github.com/thr-consulting/storybook-state/issues"
   },
-  "homepage": "https://github.com/dump247/storybook-state#readme",
+  "homepage": "https://github.com/thr-consulting/storybook-state/blob/master/README.md",
   "publishConfig": {
     "access": "public"
   },
   "peerDependencies": {
-    "@storybook/addons": "^3.2.16",
+    "@storybook/addons": "^4.0.0-alpha.9",
     "prop-types": "^15.5.0",
     "react": "^15.5.0 || ^16.0.0"
   },
@@ -36,8 +39,8 @@
     "react-json-view": "^1.13.3"
   },
   "devDependencies": {
-    "@storybook/addon-info": "^3.4.0",
-    "@storybook/react": "^3.2.16",
+    "@storybook/addon-info": "^4.0.0-alpha.9",
+    "@storybook/react": "^4.0.0-alpha.9",
     "@types/storybook__react": "^3.0.7",
     "babel-cli": "^6.26.0",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.10",
